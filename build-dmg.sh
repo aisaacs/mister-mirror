@@ -40,6 +40,10 @@ else
     echo "    Run ./scripts/generate-icon.sh first to generate it."
 fi
 
+echo "==> Signing app bundle..."
+codesign --force --deep --sign - "$STAGING_DIR/$BUNDLE_NAME"
+echo "==> App signed (ad-hoc)."
+
 echo "==> Creating DMG..."
 DMG_PATH="$OUTPUT_DIR/MisterMirror.dmg"
 rm -f "$DMG_PATH"
