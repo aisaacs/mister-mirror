@@ -8,6 +8,9 @@
   <em>A dapper little macOS app that mirrors your iPhone screen over USB.</em>
   <br>
   No QuickTime. No Reflector. No subscriptions. Just plug in and go.
+  <br><br>
+  <a href="https://aisaacs.github.io/mister-mirror/">Website</a> &middot;
+  <a href="https://github.com/aisaacs/mister-mirror/releases/latest/download/MisterMirror.dmg">Download DMG</a>
 </p>
 
 ---
