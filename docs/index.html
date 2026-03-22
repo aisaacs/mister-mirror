@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mister Mirror — iPhone Screen Mirroring for Mac</title>
+    <meta name="description" content="A dapper little macOS app that mirrors your iPhone screen over USB. No QuickTime. No subscriptions. Just plug in and go.">
+    <meta property="og:title" content="Mister Mirror">
+    <meta property="og:description" content="Mirror your iPhone screen on your Mac. No QuickTime needed.">
+    <meta property="og:image" content="icon.jpg">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/jpeg" href="icon.jpg">
+    <style>
+        :root {
+            --blue: #3380f2;
+            --purple: #8c40d9;
+            --dark: #1a1a2e;
+            --darker: #12121f;
+            --text: #e8e8f0;
+            --text-muted: #9999b0;
+            --card-bg: #22223a;
+            --card-border: #33335a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(51, 128, 242, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(140, 64, 217, 0.12) 0%, transparent 60%),
+                var(--darker);
+        }
+
+        .hero-icon {
+            width: 180px;
+            height: 180px;
+            border-radius: 36px;
+            box-shadow:
+                0 20px 60px rgba(51, 128, 242, 0.3),
+                0 8px 20px rgba(0, 0, 0, 0.4);
+            margin-bottom: 2rem;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--text) 0%, var(--text-muted) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero .tagline {
+            font-size: 1.4rem;
+            color: var(--text-muted);
+            max-width: 500px;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero .tagline em {
+            color: var(--text);
+            font-style: normal;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 2rem;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--blue), var(--purple));
+            color: white;
+            box-shadow: 0 4px 20px rgba(51, 128, 242, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(51, 128, 242, 0.45);
+        }
+
+        .btn-secondary {
+            background: var(--card-bg);
+            color: var(--text);
+            border: 1px solid var(--card-border);
+        }
+
+        .btn-secondary:hover {
+            background: #2a2a48;
+            transform: translateY(-2px);
+        }
+
+        /* Features */
+        .features {
+            padding: 6rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            color: var(--text);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.15rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* How it works */
+        .how-it-works {
+            padding: 6rem 2rem;
+            background: var(--dark);
+        }
+
+        .how-it-works-inner {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .how-it-works h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .step {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--blue), var(--purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .step h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .step p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Shortcuts */
+        .shortcuts {
+            padding: 5rem 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .shortcuts h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .shortcut-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .shortcut-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+        }
+
+        .shortcut-row span {
+            color: var(--text-muted);
+        }
+
+        kbd {
+            background: var(--darker);
+            border: 1px solid var(--card-border);
+            border-radius: 6px;
+            padding: 0.3rem 0.7rem;
+            font-family: 'SF Mono', 'Menlo', monospace;
+            font-size: 0.85rem;
+            color: var(--text);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--card-border);
+        }
+
+        footer a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 2.4rem; }
+            .hero .tagline { font-size: 1.1rem; }
+            .hero-icon { width: 140px; height: 140px; }
+            .features h2, .how-it-works h2, .shortcuts h2 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+<section class="hero">
+    <img src="icon.jpg" alt="Mister Mirror" class="hero-icon">
+    <h1>Mister Mirror</h1>
+    <p class="tagline">
+        Mirror your iPhone screen on your Mac.<br>
+        <em>No QuickTime. No subscriptions. Just plug in.</em>
+    </p>
+    <div class="cta-group">
+        <a href="https://github.com/YOUR_USERNAME/MisterMirror/releases/latest/download/MisterMirror.dmg" class="btn btn-primary">
+            Download DMG
+        </a>
+        <a href="https://github.com/YOUR_USERNAME/MisterMirror" class="btn btn-secondary">
+            View on GitHub
+        </a>
+    </div>
+</section>
+
+<section class="features">
+    <h2>Everything you need, nothing you don't</h2>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="feature-icon">&#x1F4F1;</div>
+            <h3>Live Mirroring</h3>
+            <p>Your iPhone screen in a native macOS window. Resizable, aspect-ratio locked, buttery smooth.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#x1F4F8;</div>
+            <h3>Screenshots</h3>
+            <p>Cmd+S captures a full-resolution PNG straight to your Desktop. With a satisfying flash.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#x1F3AC;</div>
+            <h3>Video Recording</h3>
+            <p>Cmd+R toggles H.264 recording. Saved as .mp4 to your Desktop. No watermarks, no limits.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#x1F3A9;</div>
+            <h3>Zero Dependencies</h3>
+            <p>Built entirely on Apple frameworks. ~300 lines of Swift. No Electron, no web views, no bloat.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#x26A1;</div>
+            <h3>Native Performance</h3>
+            <p>Uses the same CoreMediaIO protocol as QuickTime. Hardware-accelerated H.264 over USB.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">&#x1F513;</div>
+            <h3>Free &amp; Open Source</h3>
+            <p>MIT licensed. Read every line of code. No telemetry, no accounts, no tracking.</p>
+        </div>
+    </div>
+</section>
+
+<section class="how-it-works">
+    <div class="how-it-works-inner">
+        <h2>How it works</h2>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div>
+                <h3>Plug in your iPhone</h3>
+                <p>Connect via USB. Unlock it and trust this computer if it's your first time.</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <div>
+                <h3>Launch Mister Mirror</h3>
+                <p>He activates the screen capture subsystem — the same one QuickTime uses — in a few seconds.</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-number">3</div>
+            <div>
+                <h3>That's it</h3>
+                <p>Your iPhone screen appears in a window. Take screenshots, record video, or just watch. Mister Mirror handles the rest.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="shortcuts">
+    <h2>Keyboard shortcuts</h2>
+    <div class="shortcut-list">
+        <div class="shortcut-row">
+            <span>Take screenshot</span>
+            <kbd>&#x2318;S</kbd>
+        </div>
+        <div class="shortcut-row">
+            <span>Start / stop recording</span>
+            <kbd>&#x2318;R</kbd>
+        </div>
+        <div class="shortcut-row">
+            <span>Quit</span>
+            <kbd>&#x2318;Q</kbd>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>
+        Made with care. Open source on <a href="https://github.com/YOUR_USERNAME/MisterMirror">GitHub</a>.
+        <br>
+        Requires macOS 13+ and an iPhone connected via USB.
+    </p>
+</footer>
+
+</body>
+</html>
