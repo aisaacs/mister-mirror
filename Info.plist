@@ -2,29 +2,29 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CFBundleName</key>
-    <string>Mister Mirror</string>
-    <key>CFBundleDisplayName</key>
-    <string>Mister Mirror</string>
-    <key>CFBundleIdentifier</key>
-    <string>com.mister-mirror.app</string>
-    <key>CFBundleVersion</key>
-    <string>1.0</string>
-    <key>CFBundleShortVersionString</key>
-    <string>1.0</string>
-    <key>CFBundleExecutable</key>
-    <string>MisterMirror</string>
-    <key>CFBundlePackageType</key>
-    <string>APPL</string>
-    <key>CFBundleInfoDictionaryVersion</key>
-    <string>6.0</string>
-    <key>LSMinimumSystemVersion</key>
-    <string>13.0</string>
-    <key>NSCameraUsageDescription</key>
-    <string>Mister Mirror needs camera access to display your connected iPhone's screen. Don't be shy!</string>
-    <key>NSHighResolutionCapable</key>
-    <true/>
-    <key>LSUIElement</key>
-    <false/>
+	<key>CFBundleDisplayName</key>
+	<string>Mister Mirror</string>
+	<key>CFBundleExecutable</key>
+	<string>MisterMirror</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.mister-mirror.app</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>Mister Mirror</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.1</string>
+	<key>CFBundleVersion</key>
+	<string>1.1</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>13.0</string>
+	<key>LSUIElement</key>
+	<false/>
+	<key>NSCameraUsageDescription</key>
+	<string>Mister Mirror needs camera access to display your connected iPhone's screen. Don't be shy!</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
 </dict>
 </plist>
