@@ -11,7 +11,7 @@ cd "$SCRIPT_DIR/.."
 # Get the latest tag
 LATEST_TAG=$(git tag --sort=-v:refname | head -n1 2>/dev/null || echo "")
 
-if [ -n "$1" ]; then
+if [ "${1:-}" != "" ]; then
     NEW_VERSION="$1"
 else
     if [ -z "$LATEST_TAG" ]; then
