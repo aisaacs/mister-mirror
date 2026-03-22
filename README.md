@@ -1,57 +1,111 @@
-# Mister Mirror
+<p align="center">
+  <img src="Resources/AppIcon.jpg" width="200" alt="Mister Mirror icon — a friendly hand mirror wearing a top hat">
+</p>
 
-A dapper little macOS app that mirrors your iPhone's screen over USB — no QuickTime needed.
+<h1 align="center">Mister Mirror</h1>
 
-Mister Mirror uses the same CoreMediaIO/AVFoundation mechanism that QuickTime Player uses internally: he tells macOS to expose connected iOS devices as capture sources, then displays the live H.264 stream in a window. He even comes with his own top hat.
+<p align="center">
+  <em>A dapper little macOS app that mirrors your iPhone screen over USB.</em>
+  <br>
+  No QuickTime. No Reflector. No subscriptions. Just plug in and go.
+</p>
+
+---
+
+Mister Mirror uses the same native Apple protocol that QuickTime Player uses under the hood — CoreMediaIO and AVFoundation — to display your iPhone's screen in a clean, resizable window. He tips his hat on the way out.
+
+## Features
+
+- **Live mirroring** — your iPhone screen in a native macOS window
+- **Screenshots** — Cmd+S saves a full-resolution PNG to your Desktop
+- **Video recording** — Cmd+R starts/stops H.264 recording, saved as .mp4 to Desktop
+- **Zero dependencies** — built entirely on Apple frameworks, no third-party libraries
+- **Single file** — the entire app is ~300 lines of Swift
 
 ## Requirements
 
-- macOS 13+
+- macOS 13 (Ventura) or later
+- iPhone connected via USB cable
+- iPhone must be unlocked and trusted
 - Xcode Command Line Tools (`xcode-select --install`)
-- iPhone connected via USB, unlocked, and trusted
 
-## Quick Start
+## Install
+
+### Option A: Build the DMG
 
 ```bash
 ./build-dmg.sh
 open build/release/MisterMirror.dmg
 ```
 
-Drag **Mister Mirror** to Applications. Launch him. He'll find your iPhone.
+Drag **Mister Mirror** to Applications. Done.
 
-## Development
+> First launch: macOS may say the app is from an unidentified developer. Right-click the app > Open, or allow it in System Settings > Privacy & Security.
+
+### Option B: Open in Xcode
+
+```bash
+open MisterMirror.xcodeproj
+```
+
+Hit Cmd+R to build and run.
+
+### Option C: Command line
 
 ```bash
 swift build
 swift run
 ```
 
+## Usage
+
+1. Connect your iPhone via USB
+2. Unlock the iPhone (and trust this computer if prompted)
+3. Launch Mister Mirror
+4. Wait a few seconds — he's activating the screen capture subsystem
+
+| Shortcut | Action |
+|----------|--------|
+| Cmd+S | Take screenshot (saved to Desktop) |
+| Cmd+R | Start / stop video recording |
+| Cmd+Q | Quit |
+
+Screenshots are saved as `MisterMirror-YYYY-MM-DD-HHmmss.png` and recordings as `.mp4`, both on your Desktop.
+
 ## How It Works
 
-1. Sets the `kCMIOHardwarePropertyAllowScreenCaptureDevices` CoreMediaIO property — this triggers macOS to activate a hidden USB configuration on the iPhone that exposes screen capture endpoints
-2. Discovers the iPhone via `AVCaptureDevice.DiscoverySession` (it appears as an external muxed audio/video device)
-3. Displays the live capture stream using `AVCaptureVideoPreviewLayer` in a native AppKit window
+QuickTime Player can display a connected iPhone's screen. Mister Mirror does the same thing, minus QuickTime:
 
-The entire app is a single Swift file (~150 lines) with no dependencies beyond Apple's frameworks.
+1. **Activates screen capture** — sets the `kCMIOHardwarePropertyAllowScreenCaptureDevices` CoreMediaIO property, which tells macOS to send a special USB control request to the iPhone. The iPhone disconnects and reconnects with a hidden USB configuration exposing screen capture endpoints.
 
-## Build Output
+2. **Discovers the device** — the iPhone appears as an `AVCaptureDevice` (type `.externalUnknown`, media type `.muxed`) via `AVCaptureDevice.DiscoverySession`.
 
-Running `./build-dmg.sh` produces:
+3. **Captures and displays** — an `AVCaptureSession` pipes the live H.264 video stream through an `AVCaptureVideoPreviewLayer` into an AppKit window. A parallel `AVCaptureVideoDataOutput` taps the raw frames for screenshots and recording.
+
+All of this uses public Apple frameworks. No private APIs, no USB hacking, no reverse engineering needed.
+
+## Project Structure
 
 ```
-build/release/
-├── Mister Mirror.app    # The app bundle
-└── MisterMirror.dmg     # Distributable disk image
+MisterMirror/
+├── Sources/main.swift             # The entire app
+├── MisterMirror.xcodeproj/        # Xcode project
+├── Package.swift                  # Swift package (for CLI builds)
+├── Info.plist                     # App bundle metadata + camera usage description
+├── Assets.xcassets/               # Asset catalog with app icon (for Xcode)
+├── Resources/
+│   ├── AppIcon.jpg                # Source icon image
+│   └── AppIcon.icns               # Compiled icon (for DMG builds)
+├── build-dmg.sh                   # Build script -> build/release/MisterMirror.dmg
+└── scripts/generate-icon.sh       # Regenerate .icns from source image
 ```
-
-The DMG includes an Applications shortcut for drag-to-install.
 
 ## Notes
 
-- First launch takes a few seconds while macOS activates the USB screen capture subsystem
-- macOS will prompt for Camera permission on first run — Mister Mirror needs it, don't be shy
-- The app icon (a top-hat-wearing mirror with a friendly face) is generated at build time — no external assets needed
-- Not code-signed — macOS may require you to right-click > Open on first launch, or allow it in System Settings > Privacy & Security
+- **First launch is slow** — the CoreMediaIO property activation takes 2-5 seconds. If QuickTime is already running, it's instant (QuickTime keeps the property set).
+- **Camera permission** — macOS will prompt for Camera access on first run. Mister Mirror needs this to see the iPhone as a capture device.
+- **Rate limiting** — there's a ~1 minute cooldown between app restarts for the CoreMediaIO activation. If the app doesn't find your device, wait a moment and try again.
+- **Not code-signed** — unless you sign it yourself, macOS Gatekeeper will block it. Right-click > Open to bypass.
 
 ## License
 
